@@ -28,10 +28,25 @@ app.listen(5014, () => {
 });
 
 async function osu_search(req) {
+	console.log("Starting search...");
+	const timeStart = new Date().getTime();
 	return new Promise(async (resolve, reject) => {
-		const asdf = await KitsuAPI.search(50, parseInt(req.query["p"]), parseInt(req.query["r"]), parseInt(req.query["m"]), req.query["q"]);
-		console.log(asdf);
-		resolve("");
+		const searchData = await KitsuAPI.search(39, parseInt(req.query["p"]), parseInt(req.query["r"]), parseInt(req.query["m"]), req.query["q"]);
+		let directString = "";
+		if (searchData.length >= 40) {
+			directString += 101;
+		} else {
+			directString += searchData.length;
+		}
+		
+		directString += "\r\n";
+
+		for (let set of searchData) {
+			directString += `${KitsuAPI.kitsuDirectConvert(set)}\r\n`;
+		}
+		//console.log(directString);
+		console.log(`webreq took ${new Date().getTime() - timeStart}ms`);
+		resolve(directString);
 	});
 }
 
