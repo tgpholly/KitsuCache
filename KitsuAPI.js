@@ -16,14 +16,18 @@ function queryConverter(query = "") {
 	}
 }
 
-function kitsuDirectConvert(json = {}) {
-	let s = `${json.SetID}|${json.Artist}|${json.Title}|${json.Creator}|${json.RankedStatus}|10.00000|${new Date(json.LastUpdate).getTime()}|${json.SetID}|${json.ChildrenBeatmaps[0].BeatmapID}|0|0|0||`;
+function kitsuDirectListingConvert(json = {}) {
+	let s = `${json.SetID}.osz|${json.Artist}|${json.Title}|${json.Creator}|${json.RankedStatus}|10.00000|${json.LastUpdate}|${json.SetID}|${json.ChildrenBeatmaps[0].BeatmapID}|0|0|0||`;
 	for (let diff of json.ChildrenBeatmaps) {
 		s += `${diff.DiffName}@${diff.Mode},`;
 	}
 	s = s.substring(0, s.length - 1);
 
 	return s;
+}
+
+function kitsuDirectSingleConvert(json) {
+	return `${json.SetID}.osz|${json.Artist}|${json.Title}|${json.Creator}|${1}|10.00000|${0}|${json.SetID}|${json.SetID}|0|0|0|`;
 }
 
 function statusConverter(status = 0) {
@@ -58,7 +62,20 @@ async function search(amount = 40, page = 0, status = 1, mode = 0, query = "") {
 	return response;
 }
 
+async function searchSingle(beatmapId = 0) {
+	const beatmap = await AsyncHttpRequest(`https://kitsu.moe/api/b/${beatmapId}`, RequestType.JSON); // Get beatmap the client requested
+
+	if (beatmap != null && beatmap instanceof Object) {
+		const response = await AsyncHttpRequest(`https://kitsu.moe/api/s/${beatmap.ParentSetID}`, RequestType.JSON); // Get the parent set from the beatmap
+
+		return response;
+	}
+	else return null;
+}
+
 module.exports = {
 	search: search,
-	kitsuDirectConvert: kitsuDirectConvert,
+	searchSingle: searchSingle,
+	kitsuDirectListingConvert: kitsuDirectListingConvert,
+	kitsuDirectSingleConvert, kitsuDirectSingleConvert
 }
