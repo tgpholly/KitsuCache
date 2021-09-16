@@ -77,5 +77,5 @@ module.exports = {
 	search: search,
 	searchSingle: searchSingle,
 	kitsuDirectListingConvert: kitsuDirectListingConvert,
-	kitsuDirectSingleConvert, kitsuDirectSingleConvert
+	kitsuDirectSingleConvert: kitsuDirectSingleConvert
 }
