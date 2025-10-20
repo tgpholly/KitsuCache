@@ -27,7 +27,7 @@ function log(s) {
     fs.appendFile("history.log", `${s}\n`, () => {});
 }
 
-app.get("*", async (req, res) => {
+app.get("/{*splat}", async (req, res) => {
 	switch (req.url.split("?")[0]) {
 		case "/":
 		case "/index":

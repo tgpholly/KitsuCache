@@ -1,5 +1,3 @@
-const AsyncHttpRequest = require("./AsyncHttpRequest.js"), RequestType = require("./RequestType.json");
-
 function queryConverter(query = "") {
 	query = query.split("+").join(" ");
 
@@ -57,18 +55,14 @@ function statusConverter(status = 0) {
 }
 
 async function search(amount = 40, page = 0, status = 1, mode = 0, query = "") {
-	const response = await AsyncHttpRequest(`https://kitsu.moe/api/search?amount=50&offset=${amount * page}${(status == 4 ? "" : `&status=${statusConverter(status)}`)}${(mode == -1 ? "" : `&mode=${mode}`)}&query=${queryConverter(query)}`, RequestType.JSON);
-
-	return response;
+	return await (await fetch(`https://kitsu.moe/api/search?amount=50&offset=${amount * page}${(status === 4 ? "" : `&status=${statusConverter(status)}`)}${(mode === -1 ? "" : `&mode=${mode}`)}&query=${queryConverter(query)}`)).json();
 }
 
 async function searchSingle(beatmapId = 0) {
-	const beatmap = await AsyncHttpRequest(`https://kitsu.moe/api/b/${beatmapId}`, RequestType.JSON); // Get beatmap the client requested
+	const beatmap = await (await fetch(`https://kitsu.moe/api/b/${beatmapId}`, RequestType.JSON)).json(); // Get beatmap the client requested
 
 	if (beatmap != null && beatmap instanceof Object) {
-		const response = await AsyncHttpRequest(`https://kitsu.moe/api/s/${beatmap.ParentSetID}`, RequestType.JSON); // Get the parent set from the beatmap
-
-		return response;
+		return await (await fetch(`https://kitsu.moe/api/s/${beatmap.ParentSetID}`, RequestType.JSON)).json(); // Get the parent set from the beatmap
 	}
 	else return null;
 }

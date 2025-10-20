@@ -8,17 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tgpethan/KitsuCache.git"
+    "url": "git+https://github.com/tgpholly/KitsuCache.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tgpethan/KitsuCache/issues"
+    "url": "https://github.com/tgpholly/KitsuCache/issues"
   },
-  "homepage": "https://github.com/tgpethan/KitsuCache#readme",
+  "homepage": "https://github.com/tgpholly/KitsuCache#readme",
   "dependencies": {
-    "express": "^4.17.1",
-    "request": "^2.88.2"
+    "express": "^5.1.0"
   }
 }
